@@ -4,7 +4,9 @@
 alias ls='ls --color'
 alias ll='ls -ltr'
 alias ld='ls -ltrd'
-alias lh='ls -dl .[^.]*'
+#alias lh='ls -dl .[^.]*'
+alias lh='shopt -s nullglob dotglob; hidden=(.[^.]*); \
+[[ ${#hidden[@]} -gt 0 ]] && ls -dl .[^.]* || echo "No hidden file"'
 
 ## colorize the grep command output for ease of use (good for log files)
 alias grep='grep --color=auto'

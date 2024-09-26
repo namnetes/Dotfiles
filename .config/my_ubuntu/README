@@ -1,0 +1,7 @@
+# Fichiers du README (Dernière mise à jour : 11 juin 2024)
+
+- `build.sh` : Script d'installation des principaux packages utiles
+- `open_wikinotes.sh` : Script permettant d'ouvrir le wikinotes Tiddlywiki
+- `post_installation.sh` : Script de post installation à exécuter après l'installation d'Ubuntu 24.04
+- `wikinotes_black.png` : Logo (noir) du wikinotes Tiddlywiki
+- `wikinotes_white.png` : Logo (blanc) du wikinotes Tiddlywiki
