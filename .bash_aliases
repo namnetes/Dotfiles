@@ -43,3 +43,8 @@ alias u='sudo apt update && sudo apt upgrade'
 
 ## xclip
 alias xclip='xclip -selection clipboard'
+
+## csv_checker (own script)
+if [ -d "$HOME/own_scripts/csv_checker" ]; then
+    alias csv_checker="python $HOME/own_scripts/csv_checker/csv_checker.py"
+fi
