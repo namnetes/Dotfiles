@@ -44,7 +44,17 @@ alias u='sudo apt update && sudo apt upgrade'
 ## xclip
 alias xclip='xclip -selection clipboard'
 
-## csv_checker (own script)
-if [ -d "$HOME/own_scripts/csv_checker" ]; then
-    alias csv_checker="python $HOME/own_scripts/csv_checker/csv_checker.py"
+# own_script KVM
+if [ -f "$HOME/own_scripts/csv_checker/csv_checker.py" ]; then
+    alias csvc="python $HOME/own_scripts/csv_checker/csv_checker.py"
 fi
+
+if [ -f "$HOME/own_scripts/kvm/vm-list.sh" ]; then
+    alias vmlist='bash $HOME/own_scripts/kvm/vm-list.sh'
+fi
+
+if [ -f "$HOME/own_scripts/kvm/vm-get-ip.sh" ]; then
+    alias getip='bash $HOME/own_scripts/kvm/vm-get-ip.sh'
+fi
+
+
