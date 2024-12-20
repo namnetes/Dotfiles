@@ -85,7 +85,7 @@ function rule() {
     rule=$(printf "%*s" $width "" | tr ' ' '0')
 
     # Replace each 0 with the sequence +123456789
-    rule=$(echo "$rule" | sed 's/0/+123456789/g')
+    rule=$(echo "$rule" | sed 's/0/123456789+/g')
 
     # Add offset spaces before displaying the rule
     local spaces
