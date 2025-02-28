@@ -55,7 +55,7 @@ function ve() {
 }
 
 jl() {
-    local sandbox_dir="$HOME/workspaces/sandbox"
+    local sandbox_dir="$HOME/Workspaces/sandbox"
     
     if [ -d "$sandbox_dir" ]; then
         cd "$sandbox_dir" || return
