@@ -120,3 +120,5 @@ fi
 if [ -f "$HOME/.bashrc_custom" ]; then
     . "$HOME/.bashrc_custom"
 fi
+
+. "$HOME/.local/bin/env"

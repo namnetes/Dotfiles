@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 
 # Vérification et déplacement dans le répertoire
-cd "$HOME/technook" || { 
-  notify-send "Erreur" "Le répertoire n'existe pas : $HOME/technook" -u critical
+cd "$HOME/Technook" || { 
+  notify-send "Erreur" "Le répertoire n'existe pas : $HOME/Technook" -u critical
   exit 1
 }
 

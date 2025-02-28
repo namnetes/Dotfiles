@@ -50,7 +50,6 @@ fi
 ############################################################################
 ## Git completion                                                          #
 ############################################################################
-
 REPO="git/git"
 FILE_PATH="contrib/completion/git-completion.bash"
 LOCAL_FILE="$HOME/.git-completion.bash"
@@ -110,11 +109,6 @@ if [[ -f "$NVM_DIR/nvm.sh" ]]; then
 fi
 
 ############################################################################
-# colored GCC warnings and errors                                          #
-############################################################################
-export GCC_COLORS='error=01;31:''warning=01;35:''note=01;36:''caret=01;32:''locus=01:''quote=01'
-
-############################################################################
 ## Remove any potential duplicate paths present in the PATH variable.      #                                                  #
 ############################################################################
 clean_path
@@ -122,7 +116,23 @@ clean_path
 ############################################################################
 ## Start startship shell                                                   #
 ############################################################################
-eval "$(starship init bash)"
+version_output=$(starship --version | head -n 1) 
+if [[ $version_output =~ ^starship\ [0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    eval "$(starship init bash)"
+else
+    echo "Starship is not yet installed in this environment"
+fi
+
+############################################################################
+# Add Pyhton packager uv                                                   #
+############################################################################
+version_output=$($HOME/.local/bin/uv --version)
+
+if [[ $version_output =~ ^uv\ [0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    source $HOME/.local/bin/env
+else
+    echo "uv is not yet installed in this environment"
+fi
 
 ############################################################################
 ## Groovy                                                                  #

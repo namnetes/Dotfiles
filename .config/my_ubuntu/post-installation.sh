@@ -126,9 +126,3 @@ gsettings set org.gnome.shell.extensions.dash-to-dock autohide true
 # Ne pas inclure dans le dock les volumes non montés
 #######################################################################################
 gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
-
-#######################################################################################
-# "Execute the 'gnome_terminal.py' script to configure GNOME Terminal to start in
-# full-screen mode"
-#######################################################################################
-python3 gnome_terminal.py
