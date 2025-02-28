@@ -16,19 +16,24 @@ alias fgrep='fgrep --color=auto'
 ## make mount command output pretty and human readable format
 alias mount='mount | column -t'
 
-## neovim
-alias nv='nvim'
-alias vim='nv'
+## lazyvim, neovim
+alias lv='NVIM_APPNAME=lazyvim nvim'
+alias nvim='lv'
+alias vim='lv'
 
 ## handy short cuts
 alias c='clear'
 alias f='free -t'
 alias h='history'
 alias j='jobs -l'
+alias lg='lazygit'
+alias rg='ripgrep'
+alias fd='fdfind'
 
 ## new set of commands
 alias ..='cd ..'
 alias ...='cd ../..'
+alias ....='cd ../../..'
 
 ## show open ports
 ## '-t' affiche les conenions TCP

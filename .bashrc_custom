@@ -114,6 +114,14 @@ fi
 clean_path
 
 ############################################################################
+## if Neovim is installed in the /usr/local/nvim folder, update the PATH   # 
+############################################################################
+export NVIM_HOME=/usr/local/nvim
+if [ -d "$NVIM_HOME/bin" ]; then
+  PATH=/usr/local/nvim/bin:$PATH
+fi
+
+############################################################################
 ## Start startship shell                                                   #
 ############################################################################
 version_output=$(starship --version | head -n 1) 
