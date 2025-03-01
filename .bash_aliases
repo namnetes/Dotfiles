@@ -17,7 +17,7 @@ alias fgrep='fgrep --color=auto'
 alias mount='mount | column -t'
 
 ## lazyvim, neovim
-alias lv='NVIM_APPNAME=lazyvim nvim'
+alias lv='nvim'
 alias nvim='lv'
 alias vim='lv'
 
@@ -27,7 +27,6 @@ alias f='free -t'
 alias h='history'
 alias j='jobs -l'
 alias lg='lazygit'
-alias rg='ripgrep'
 alias fd='fdfind'
 
 ## new set of commands
@@ -61,5 +60,4 @@ fi
 if [ -f "$HOME/own_scripts/kvm/vm-get-ip.sh" ]; then
     alias getip='bash $HOME/own_scripts/kvm/vm-get-ip.sh'
 fi
-
 
