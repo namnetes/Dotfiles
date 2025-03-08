@@ -16,18 +16,29 @@ alias fgrep='fgrep --color=auto'
 ## make mount command output pretty and human readable format
 alias mount='mount | column -t'
 
-## lazyvim, neovim
-alias lv='nvim'
-alias nvim='lv'
-alias vim='lv'
-
 ## handy short cuts
 alias c='clear'
 alias f='free -t'
 alias h='history'
 alias j='jobs -l'
-alias lg='lazygit'
 alias fd='fdfind'
+
+## fzf integration
+if command -v fzf >/dev/null 2>&1; then 
+  eval "$(fzf --bash)"
+fi
+
+## zoxide integration
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init bash)"
+fi
+
+## neovim/lazyvin
+if [ -d "/usr/local/nvim" ]; then
+  PATH=/usr/local/nvim/bin:$PATH
+  alias lv=nvim
+  alias vim=nvim
+fi
 
 ## new set of commands
 alias ..='cd ..'
@@ -49,15 +60,27 @@ alias u='sudo apt update && sudo apt upgrade'
 alias xclip='xclip -selection clipboard'
 
 # own_script KVM
-if [ -f "$HOME/own_scripts/csv_checker/csv_checker.py" ]; then
-    alias csvc="python $HOME/own_scripts/csv_checker/csv_checker.py"
+if [ -f "$HOME/Scripts/csv_checker/csv_checker.py" ]; then
+    alias csvc="python $HOME/Scripts/csv_checker/csv_checker.py"
 fi
 
-if [ -f "$HOME/own_scripts/kvm/vm-list.sh" ]; then
-    alias vmlist='bash $HOME/own_scripts/kvm/vm-list.sh'
+# Check if the kvm scripts exist
+if [ -f "$HOME/Scripts/kvm/vm-clone.sh" ]; then
+  alias vclone='bash $HOME/Scripts/kvm/vm-clone.sh'
 fi
 
-if [ -f "$HOME/own_scripts/kvm/vm-get-ip.sh" ]; then
-    alias getip='bash $HOME/own_scripts/kvm/vm-get-ip.sh'
+if [ -f "$HOME/Scripts/kvm/vm-get-ip.sh" ]; then
+  alias vip='bash $HOME/Scripts/kvm/vm-get-ip.sh'
 fi
 
+if [ -f "$HOME/Scripts/kvm/vm-list.sh" ]; then
+  alias vlist='bash $HOME/Scripts/kvm/vm-list.sh'
+fi
+
+if [ -f "$HOME/Scripts/kvm/vm-set-hostname.sh" ]; then
+  alias vhost='bash $HOME/Scripts/kvm/vm-set-hostname.sh'
+fi
+
+if [ -f "$HOME/Scripts/kvm/vm-update-sshconfig.sh" ]; then
+  alias vssh='bash $HOME/Scripts/kvm/vm-update-sshconfig.sh'
+fi
