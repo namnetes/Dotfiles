@@ -100,12 +100,19 @@ source "$LOCAL_FILE"
 ############################################################################
 ## NodeJS                                                                  #
 ############################################################################
-export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.nvm}"
+# Define the directory where NVM (Node Version Manager) will be installed
+export NVM_DIR="$HOME/.nvm"
 
-# Check if nvm.sh exists in the determined directory
-if [[ -f "$NVM_DIR/nvm.sh" ]]; then
-    # Load nvm by sourcing the nvm.sh script
-    source "$NVM_DIR/nvm.sh"
+# Check if the nvm.sh script exists in the NVM_DIR directory
+# If it exists, load it (this loads NVM)
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  source "$NVM_DIR/nvm.sh"
+fi
+
+# Check if the bash_completion script for NVM exists in the NVM_DIR
+# directory. If it exists, load it (this loads NVM bash completion)
+if [ -s "$NVM_DIR/bash_completion" ]; then
+  source "$NVM_DIR/bash_completion"
 fi
 
 ############################################################################
@@ -119,6 +126,9 @@ clean_path
 export NVIM_HOME=/usr/local/nvim
 if [ -d "$NVIM_HOME/bin" ]; then
   PATH=/usr/local/nvim/bin:$PATH
+  export EDITOR=nvim
+else
+  export EDITOR=ED
 fi
 
 ############################################################################
@@ -155,8 +165,3 @@ fi
 
 # Configuration for GTK modules
 export GTK_MODULES=canberra-gtk-module
-
-# Load NVM bash completion if available
-if [[ -s "$NVM_DIR/bash_completion" ]]; then
-    source "$NVM_DIR/bash_completion"
-fi
