@@ -285,3 +285,48 @@ ge() {
   gnome-text-editor "$@" &
 }
 
+
+
+###############################################################################
+# Monitor some own Git projects                                                #
+###############################################################################
+gsp() {
+  # Save the current directory
+  local current_dir="$(pwd)"
+
+  # Define projects and their paths
+  projects=(
+    "$HOME/Dotfiles"
+    "$HOME/Scripts"
+    "$HOME/Technook"
+  )
+
+  # ANSI color codes
+  GREEN="\e[32m"
+  RED="\e[31m"
+  BLUE="\e[34m"
+  RESET="\e[0m"
+
+  # Icons for Firacode font with colors
+  icon_clean="${GREEN}✔${RESET}"   # Green for clean repo
+  icon_dirty="${RED}✖${RESET}"      # Red for modified repo
+  icon_not_git="${BLUE}🚫${RESET}"  # Blue for non-Git repo
+
+  # Function to check the status of each project
+  for project in "${projects[@]}"; do
+    if [ -d "$project/.git" ]; then
+      cd "$project" || continue
+      if git diff --quiet && git diff --cached --quiet; then
+        status="$icon_clean Clean"
+      else
+        status="$icon_dirty Modified"
+      fi
+      echo -e "$(basename "$project"):\t$status"
+    else
+      echo -e "$(basename "$project"):\t🚫 Not a Git repository"
+    fi
+  done
+  
+  # Restore the original directory
+  cd "$current_dir"
+}
