@@ -316,11 +316,17 @@ gsp() {
   for project in "${projects[@]}"; do
     if [ -d "$project/.git" ]; then
       cd "$project" || continue
-      if git diff --quiet && git diff --cached --quiet; then
-        status="$icon_clean Clean"
+      
+      # git status --porcelain 
+      #  - affiche une sortie simplifiée adaptée aux scripts.
+      # grep -qE '^[ MADRCU?]'
+      #  - détecte les lignes indiquant des fichiers modifiés ou non suivis.
+      if git status --porcelain | grep -qE '^[ MADRCU?]'; then
+         status="$icon_dirty Modified"
       else
-        status="$icon_dirty Modified"
+         status="$icon_clean Clean"
       fi
+
       echo -e "$(basename "$project"):\t$status"
     else
       echo -e "$(basename "$project"):\t🚫 Not a Git repository"
