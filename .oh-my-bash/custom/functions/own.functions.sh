@@ -286,7 +286,6 @@ ge() {
 }
 
 
-
 ###############################################################################
 # Monitor some own Git projects                                                #
 ###############################################################################
@@ -316,7 +315,7 @@ gsp() {
   for project in "${projects[@]}"; do
     if [ -d "$project/.git" ]; then
       cd "$project" || continue
-      
+
       # git status --porcelain 
       #  - affiche une sortie simplifiée adaptée aux scripts.
       # grep -qE '^[ MADRCU?]'
@@ -332,7 +331,35 @@ gsp() {
       echo -e "$(basename "$project"):\t🚫 Not a Git repository"
     fi
   done
-  
+
   # Restore the original directory
   cd "$current_dir"
+}
+
+
+###############################################################################
+# Display Gnome user Share WebDAV - Info Summary                              #
+###############################################################################
+gus() {
+  # Check if the service is running
+  STATUS=$(systemctl --user is-active gnome-user-share-webdav.service)
+
+  # Get full status output
+  INFO=$(systemctl --user status gnome-user-share-webdav.service)
+
+  # Extract main PID
+  PID=$(echo "$INFO" | grep -oP 'Main PID: \K[0-9]+')
+
+  # Extract memory usage
+  MEMORY=$(echo "$INFO" | grep -oP 'Memory:\s+\K.*')
+
+  # Extract Apache listening port (look for "Listen" argument)
+  PORT=$(echo "$INFO" | grep -oP 'Listen \K[0-9]+' | head -n 1)
+
+  echo "🔍 Gnome User Share WebDAV - Info Summary"
+  echo "-----------------------------------------"
+  echo "✅ Status       : $STATUS"
+  echo "🆔 Main PID     : $PID"
+  echo "📦 Memory Usage : $MEMORY"
+  echo "🌐 Listening on : Port $PORT"
 }
