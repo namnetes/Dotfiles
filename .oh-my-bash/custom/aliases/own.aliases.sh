@@ -20,14 +20,14 @@ if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init bash)"
 fi
 
-# dotfiles only
+## dotfiles only
 alias lh='shopt -s nullglob dotglob; hidden=(.[^.]*); \
 [[ ${#hidden[@]} -gt 0 ]] && ls -dl .[^.]* || echo "No hidden file"'
 
 ## make mount command output pretty and human readable format
 alias mount='mount | column -t'
 
-# handy aliases
+## handy aliases
 alias f='free -t'
 alias h='history | fzf'
 alias j='jobs -l'
@@ -54,9 +54,14 @@ if grep -qE "(Microsoft|WSL)" /proc/version; then
   alias xclip='xclip -sel clip'
 else
   alias xclip='xclip -selection clipboard'
-fi 
- 
-# own_script KVM
+fi
+
+## display fucntion defined in the custom folder of .oh-my-bash
+if [ -f "$HOME//.oh-my-bash/custom/functions/own.functions.sh" ]; then
+  alias func="grep -E '^\s*[a-zA-Z0-9_]+\s*\(\)\s*\{' ~/.oh-my-bash/custom/functions/own.functions.sh | sed s'/{//g'"
+fi
+
+## own_script KVM
 if [ -f "$HOME/Scripts/csv_checker/csv_checker.py" ]; then
   alias csvc="python $HOME/Scripts/csv_checker/csv_checker.py"
 fi
