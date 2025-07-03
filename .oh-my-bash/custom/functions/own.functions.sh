@@ -363,3 +363,12 @@ gus() {
   echo "📦 Memory Usage : $MEMORY"
   echo "🌐 Listening on : Port $PORT"
 }
+
+###############################################################################
+# Batch rename the image files in the current directory.                      #
+###############################################################################
+renimg() {
+  python3 "$HOME/.oh-my-bash/custom/functions/rename_images.py" "$@"
+}
+
+
