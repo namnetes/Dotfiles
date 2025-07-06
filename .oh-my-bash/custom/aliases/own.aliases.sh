@@ -33,6 +33,7 @@ alias f='free -t'
 alias h='history | fzf'
 alias j='jobs -l'
 alias fd='fdfind'
+alias s='source ~/.bashrc'
 
 ## make mount command output pretty and human readable format
 alias mount='mount | column -t'
@@ -44,6 +45,13 @@ alias mount='mount | column -t'
 ## '-n' affiche les IP et les ports sous forme numérique
 ## '-p' affiche le nom du processus et son PID
 alias p='ss -tulnp'
+
+## Quelques options au lancement de nano
+## -l: affiche les numéros de ligne
+## -c: affiche en continun le numéro de ligne et colonne et autres statistiques
+## -i: active l'indentation automatique
+## -E: Convertit les tabulations en espaces
+alias n='nano -lciE'
 
 ## update ubuntu system
 alias u='sudo apt update && sudo apt upgrade && pkill firefox && sudo snap refresh'

@@ -6,17 +6,21 @@ import argparse
 def renommer_images(prefix):
     # Nettoie le préfixe pour enlever les caractères indésirables à la fin
     prefix = re.sub(r'[-_.]$', '', prefix)
-    # Extensions d'images supportées
-    extensions = [
-        "jpg", "jpeg", "png", "gif", "bmp", "tiff", "tif", "webp"
-    ]
+
+    # Extensions d'images supportées (triées)
+    extensions = sorted([
+        "bmp", "gif", "jpeg", "jpg", "mp4", "png", "tif", "tiff", "webm", "webp"
+    ])
+
     # Liste des fichiers images dans le dossier courant
     files = [
         f for f in os.listdir('.')
-        if os.path.isfile(f)
-        and f.lower().split('.')[-1] in extensions
-        and not f.startswith('.')
-        and f != os.path.basename(__file__)
+        if (
+            os.path.isfile(f)
+            and not f.startswith('.')
+            and f.lower().split('.')[-1] in extensions
+            and f != os.path.basename(__file__)
+        )
     ]
 
     total = len(files)
