@@ -70,11 +70,6 @@ if [ -f "$HOME//.oh-my-bash/custom/functions/own.functions.sh" ]; then
   alias func="grep -E '^\s*[a-zA-Z0-9_]+\s*\(\)\s*\{' ~/.oh-my-bash/custom/functions/own.functions.sh | sed s'/{//g'"
 fi
 
-## own_script KVM
-if [ -f "$HOME/Scripts/csv_checker/csv_checker.py" ]; then
-  alias csvc="python $HOME/Scripts/csv_checker/csv_checker.py"
-fi
-
 if [ -f "$HOME/Scripts/kvm/vm-clone.sh" ]; then
   alias vclone='bash $HOME/Scripts/kvm/vm-clone.sh'
 fi

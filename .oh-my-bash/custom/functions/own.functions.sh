@@ -371,4 +371,11 @@ renimg() {
   python3 "$HOME/.oh-my-bash/custom/functions/rename_images.py" "$@"
 }
 
+###############################################################################
+# csv_checker function                                                        #
+###############################################################################
+csvc() {
+  python3 "$HOME/.oh-my-bash/custom/functions/csv_checker.py" "$@"
+}
+
 
