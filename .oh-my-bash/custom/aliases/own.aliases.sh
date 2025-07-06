@@ -33,7 +33,6 @@ alias f='free -t'
 alias h='history | fzf'
 alias j='jobs -l'
 alias fd='fdfind'
-alias s='source ~/.bashrc'
 
 ## make mount command output pretty and human readable format
 alias mount='mount | column -t'
