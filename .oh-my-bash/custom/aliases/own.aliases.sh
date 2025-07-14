@@ -46,11 +46,13 @@ alias mount='mount | column -t'
 alias p='ss -tulnp'
 
 ## Quelques options au lancement de nano
-## -l: affiche les numéros de ligne
-## -c: affiche en continun le numéro de ligne et colonne et autres statistiques
-## -i: active l'indentation automatique
-## -E: Convertit les tabulations en espaces
-alias n='nano -lciE'
+## -l          : affiche les numéros de ligne
+## -c          : affiche en continu le numéro de ligne, la colonne et diverses statistiques
+## -i          : active l'indentation automatique
+## -E          : remplace les tabulations par des espaces
+## -W          : désactive le retour automatique à la ligne (line wrapping)
+## --tabsize=3 : définit la taille des tabulations à 3 espaces
+alias n='nano -lciEW --tabsize=3'
 
 ## update ubuntu system
 alias u='sudo apt update && sudo apt upgrade && pkill firefox && sudo snap refresh'
