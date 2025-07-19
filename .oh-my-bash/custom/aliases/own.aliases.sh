@@ -58,13 +58,7 @@ alias n='nano -lciEW --tabsize=3'
 alias u='sudo apt update && sudo apt upgrade && pkill firefox && sudo snap refresh'
 
 ## xclip
-if grep -qE "(Microsoft|WSL)" /proc/version; then
-  unset WINHOME
-  export WINHOME="/mnt/c/Users/galan"
-  alias xclip='xclip -sel clip'
-else
-  alias xclip='xclip -selection clipboard'
-fi
+alias xclip='xclip -selection clipboard'
 
 ## display fucntion defined in the custom folder of .oh-my-bash
 if [ -f "$HOME//.oh-my-bash/custom/functions/own.functions.sh" ]; then
