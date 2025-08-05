@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
 
 ############################################################################
-## Jupyter Lab : Sandbox environment                                       #
+## Jupyter Lab : Environnement bac à sable                                #
 ############################################################################
 JUPYTER_DIR="$HOME/Workspace/sandbox"
 
-# Python3 installed
+# Python3 est installé
 if command -v python3 &> /dev/null; then
-  # To activate a Python environment
+  # Pour activer un environnement Python
   function ve() {
     # Si le nombre d'arguments est égal à 0
     if [ $# -eq 0 ]; then
       if [ -d "./.venv" ]; then
         source ./.venv/bin/activate
       else
-        echo "No .venv directory found here in $PWD!"
+        echo "Aucun répertoire .venv trouvé ici dans $PWD !"
       fi
     # Si le nombre d'arguments est supérieur à 0
     else
-      cd "$1"
+      cd "$1" || return # Changer de répertoire et retourner en cas d'échec
       source "$1/.venv/bin/activate"
     fi
   }
@@ -34,87 +34,102 @@ if [ -d "$JUPYTER_DIR" ]; then
     ve "$SANDBOX_HOME"
     jupyter lab
     deactivate
-    cd "$HOME" || return
+    cd "$HOME" || return # Retourner au répertoire personnel et retourner en cas d'échec
   }
 
   function ipy() {
     ve "$SANDBOX_HOME"
     ipython
     deactivate
-    cd "$HOME" || return
+    cd "$HOME" || return # Retourner au répertoire personnel et retourner en cas d'échec
   }
 fi
 
 
 ############################################################################
-## NodeJS                                                                  #
+## NodeJS                                                                 #
 ############################################################################
-# Define the directory where NVM (Node Version Manager) will be installed
+# Définit le répertoire où NVM (Node Version Manager) sera installé
 export NVM_DIR="$HOME/.nvm"
 
-# Check if the nvm.sh script exists in the NVM_DIR directory
-# If it exists, load it (this loads NVM)
+# Vérifie si le script nvm.sh existe dans le répertoire NVM_DIR
+# S'il existe, le charge (ceci charge NVM)
 if [ -s "$NVM_DIR/nvm.sh" ]; then
   source "$NVM_DIR/nvm.sh"
-fi
-
-# Check if the bash_completion script for NVM exists in the NVM_DIR
-# directory. If it exists, load it (this loads NVM bash completion)
-if [ -s "$NVM_DIR/bash_completion" ]; then
-  source "$NVM_DIR/bash_completion"
+  
+  # Vérifie si le script de complétion bash pour NVM existe dans le répertoire NVM_DIR
+  # S'il existe, le charge (ceci charge la complétion bash de NVM)
+  if [ -s "$NVM_DIR/bash_completion" ]; then
+    source "$NVM_DIR/bash_completion"
+  fi
 fi
 
 
 ############################################################################
-## Neovim configuration                                                    #
+## Configuration de Helix Editor                                           #
 ############################################################################
+if command -v hx >/dev/null 2>&1; then
+    export EDITOR="hx"
+    export VISUAL="hx"
+fi
+
+
+############################################################################
+## Configuration de Neovim                                                #
+############################################################################
+# Définit le répertoire d'installation potentiel de Neovim
 export NVIM_HOME=/usr/local/nvim
 
+# Vérifie si le répertoire des binaires de Neovim existe
 if [ -d "$NVIM_HOME/bin" ]; then
+  # S'il existe, l'ajoute au PATH et définit Neovim comme éditeur par défaut
   PATH="$NVIM_HOME/bin:$PATH"
   export EDITOR=nvim
 else
+  # Sinon, définit nano comme éditeur par défaut
   export EDITOR=nano
 fi
 
 
 ############################################################################
-## Starship Shell                                                          #
+## Starship Shell                                                         #
 ############################################################################
-STARSHIP_VERSION=$(starship --version | head -n 1)
+STARSHIP_VERSION=$(starship --version 2>/dev/null | head -n 1)
 
 if [[ "$STARSHIP_VERSION" =~ ^starship\ [0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   eval "$(starship init bash)"
-else
-  echo "Starship n'est pas encore installé."
 fi
 
 
 ############################################################################
-## Python packager UV                                                      #
+## Gestionnaire de paquets Python UV                                      #
 ############################################################################
-UV_VERSION=$("$HOME/.local/bin/uv" --version | awk '{print $NF}')
+# Récupère la version de UV, supprime les erreurs et ne prend que le dernier champ (le numéro de version)
+UV_VERSION=$("$HOME/.local/bin/uv" --version 2>/dev/null | awk '{print $NF}')
 
+# Vérifie si UV_VERSION n'est pas vide, indiquant que UV est probablement installé
 if [[ -n "$UV_VERSION" ]]; then
+  # Si UV est installé, source son script d'environnement
   source "$HOME/.local/bin/env"
-else
-  echo "UV n'est pas encore installé."
 fi
 
 
 ############################################################################
-## Groovy + SDKMAN Configuration                                          #
+## Configuration de Groovy + SDKMAN                                       #
 ############################################################################
 export SDKMAN_DIR="$HOME/.sdkman"
 
+# Vérifie si le script sdkman-init.sh existe dans le répertoire SDKMAN_DIR/bin
+# S'il existe, le source (ceci initialise SDKMAN)
 if [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]; then
   source "$SDKMAN_DIR/bin/sdkman-init.sh"
 fi
 
 export GTK_MODULES=canberra-gtk-module
 
+
 ############################################################################
-## Remove duplicate paths in the PATH variable.                            #
+## Supprimer les chemins en double dans la variable PATH.                  #
 ############################################################################
 clean_path() {
   local old_IFS="$IFS"
@@ -133,42 +148,45 @@ clean_path() {
   IFS="$old_IFS"
 }
 
+
 ###############################################################################
-# To display the path one line per path                                       #
+# Pour afficher le PATH une ligne par chemin                                  #
 ###############################################################################
 function path() {
   echo "$PATH" | tr ':' '\n' | nl
 }
 
+
 ###############################################################################
-# To display ldpath one line per path                                         #
+# Pour afficher LD_LIBRARY_PATH une ligne par chemin                          #
 ###############################################################################
 function ldpath() {
   echo "$LD_LIBRARY_PATH" | tr ':' '\n' | nl
 }
 
+
 ###############################################################################
-# Display Rules                                                               #
+# Afficher les règles                                                         #
 ###############################################################################
 function rule() {
   if [ $# -eq 0 ]; then
-    local offset=0 # No parameters, no space before the rule
+    local offset=0 # Pas de paramètres, pas d'espace avant la règle
   else
-    local offset=$1 # The first parameter is the offset in spaces
+    local offset=$1 # Le premier paramètre est le décalage en espaces
   fi
 
-  # Determine the width of the terminal
+  # Déterminer la largeur du terminal
   local width
   width=$(tput cols)
 
-  # Create a string filled with '0' with the length of the terminal width
+  # Créer une chaîne remplie de '0' avec la longueur de la largeur du terminal
   local rule
-  rule=$(printf "%*s" $width "" | tr ' ' '0')
+  rule=$(printf "%*s" "$width" "" | tr ' ' '0')
 
-  # Replace each 0 with the sequence  123456789
+  # Remplacer chaque 0 par la séquence 123456789
   rule=$(echo "$rule" | sed 's/0/123456789 /g')
 
-  # Add offset spaces before displaying the rule
+  # Ajouter des espaces de décalage avant d'afficher la règle
   local spaces
   spaces=$(printf "%${offset}s" "")
   echo "${spaces}${rule:0:$((width - offset))}"
@@ -176,88 +194,89 @@ function rule() {
 
 
 ###############################################################################
-# Integrating the rule function with the head command, where rule is invoked  #
-# before head.                                                                #
+# Intégration de la fonction rule avec la commande head, où rule est         #
+# invoquée avant head.                                                        #
 ###############################################################################
 function rh() {
-  # Call the rule function to display the dynamic rule
+  # Appelle la fonction rule pour afficher la règle dynamique
   rule
 
-  # Call the head command with all the provided arguments
+  # Appelle la commande head avec tous les arguments fournis
   head "$@"
 }
 
 
 ###############################################################################
-# Integrating the rule function with the head command, where rule is invoked  #
-# before head, and preceding the display with the line length.                #
+# Intégration de la fonction rule avec la commande head, où rule est         #
+# invoquée avant head, et précédant l'affichage de la longueur de ligne.     #
 ###############################################################################
 function rhc() {
-  # Call the rule function to display the dynamic rule
+  # Appelle la fonction rule pour afficher la règle dynamique
   rule 5
 
-  # Use head to get the first n lines
+  # Utilise head pour obtenir les n premières lignes
   head_lines=$(head "$@")
 
-  # Process each line to prepend its length (always 4 characters)
+  # Traite chaque ligne pour y ajouter sa longueur (toujours 4 caractères)
   while IFS= read -r line; do
-    # Calculate the length of the line
+    # Calcule la longueur de la ligne
     line_length=$(echo -n "$line" | wc -c)
 
-    # Format line_length to always be 4 characters with leading spaces
+    # Formate line_length pour toujours avoir 4 caractères avec des espaces de début
     line_length=$(printf "%4s" "$line_length")
 
-    # Print the formatted output
-    printf "%s %sn" "$line_length" "$line"
+    # Affiche la sortie formatée
+    printf "%s %s\n" "$line_length" "$line"
   done <<<"$head_lines"
 }
 
 
 ###############################################################################
-# Integrating the rule function with the tail command, where rule is invoked  #
-# before tail.                                                                #
+# Intégration de la fonction rule avec la commande tail, où rule est         #
+# invoquée avant tail.                                                        #
 ###############################################################################
 function th() {
-  # Call the rule function to display the dynamic rule
+  # Appelle la fonction rule pour afficher la règle dynamique
   rule
 
-  # Call the tail command with all the provided arguments
+  # Appelle la commande tail avec tous les arguments fournis
   tail "$@"
 }
 
 
 ###############################################################################
-# Get the tag of the latest Docker version Images for all provided names      #
+# Obtient le tag de la dernière version d'images Docker pour tous les noms    #
+# fournis                                                                     #
 ###############################################################################
 dlvi() {
   # Vérifier si curl et jq sont installés
   if ! command -v curl &>/dev/null; then
-    echo "Error: curl is not installed."
+    echo "Erreur : curl n'est pas installé."
     return 1
   fi
 
   if ! command -v jq &>/dev/null; then
-    echo "Error: jq is not installed."
+    echo "Erreur : jq n'est pas installé."
     return 1
   fi
 
   # Vérifier que des noms d'images sont fournis
   if [ "$#" -eq 0 ]; then
-    echo "Usage: dlvi <image_name1> [<image_name2> ...]"
-    echo "Example: dlvi elasticsearch logstash kibana"
+    echo "Utilisation : dlvi <nom_image1> [<nom_image2> ...]"
+    echo "Exemple : dlvi elasticsearch logstash kibana"
     return 1
   fi
 
   # Traiter chaque nom d'image fourni en argument
   for image in "$@"; do
-    echo "Fetching the latest version of Docker image: $image"
+    echo "Récupération de la dernière version de l'image Docker : $image"
 
     # Obtenir les tags pour l'image spécifiée depuis Docker Hub
     response=$(curl -s "https://registry.hub.docker.com/v2/repositories/library/${image}/tags/?page_size=100")
 
     # Vérifiez si la requête a réussi
     if [ "$?" -ne 0 ]; then
-      echo "Failed to fetch tags for image: $image"
+      echo "Échec de la récupération des tags pour l'image : $image"
       continue
     fi
 
@@ -266,20 +285,20 @@ dlvi() {
 
     # Vérifiez si des tags ont été trouvés
     if [ -z "$tags" ]; then
-      echo "No tags found for image: $image"
+      echo "Aucun tag trouvé pour l'image : $image"
       continue
     fi
 
     # Récupérer le dernier tag
     latest_version=$(echo "$tags" | tail -n 1)
 
-    echo "The latest version of $image is: $latest_version"
+    echo "La dernière version de $image est : $latest_version"
   done
 }
 
 
 ###############################################################################
-# gnome-text-editor alias                                                     #
+# Alias pour gnome-text-editor                                                #
 ###############################################################################
 ge() {
   gnome-text-editor "$@" &
@@ -287,95 +306,94 @@ ge() {
 
 
 ###############################################################################
-# Monitor some own Git projects                                                #
+# Surveiller certains de ses propres projets Git                             #
 ###############################################################################
 gsp() {
-  # Save the current directory
+  # Sauvegarder le répertoire actuel
   local current_dir="$(pwd)"
 
-  # Define projects and their paths
+  # Définir les projets et leurs chemins
   projects=(
-    "$HOME/Dotfiles"
-    "$HOME/Scripts"
-    "$HOME/Technook"
+    "$HOME/alm-dotfiles"
+    "$HOME/alm-tools"
+    "$HOME/alm-technook"
   )
 
-  # ANSI color codes
+  # Codes de couleur ANSI
   GREEN="\e[32m"
   RED="\e[31m"
   BLUE="\e[34m"
   RESET="\e[0m"
 
-  # Icons for Firacode font with colors
-  icon_clean="${GREEN}✔${RESET}"   # Green for clean repo
-  icon_dirty="${RED}✖${RESET}"      # Red for modified repo
-  icon_not_git="${BLUE}🚫${RESET}"  # Blue for non-Git repo
+  # Icônes pour la police Firacode avec couleurs
+  icon_clean="${GREEN}✔${RESET}"    # Vert pour un dépôt propre
+  icon_dirty="${RED}✖${RESET}"      # Rouge pour un dépôt modifié
+  icon_not_git="${BLUE}🚫${RESET}"  # Bleu pour un dépôt non-Git
 
-  # Function to check the status of each project
+  # Fonction pour vérifier l'état de chaque projet
   for project in "${projects[@]}"; do
     if [ -d "$project/.git" ]; then
-      cd "$project" || continue
+      cd "$project" || continue # Changer de répertoire et continuer en cas d'échec
 
-      # git status --porcelain 
+      # git status --porcelain
       #  - affiche une sortie simplifiée adaptée aux scripts.
       # grep -qE '^[ MADRCU?]'
       #  - détecte les lignes indiquant des fichiers modifiés ou non suivis.
       if git status --porcelain | grep -qE '^[ MADRCU?]'; then
-         status="$icon_dirty Modified"
+          status="$icon_dirty Modifié"
       else
-         status="$icon_clean Clean"
+          status="$icon_clean Propre"
       fi
 
       echo -e "$(basename "$project"):\t$status"
     else
-      echo -e "$(basename "$project"):\t🚫 Not a Git repository"
+      echo -e "$(basename "$project"):\t🚫 Pas un dépôt Git"
     fi
   done
 
-  # Restore the original directory
-  cd "$current_dir"
+  # Restaurer le répertoire original
+  cd "$current_dir" || return # Restaurer le répertoire et retourner en cas d'échec
 }
 
 
 ###############################################################################
-# Display Gnome user Share WebDAV - Info Summary                              #
+# Afficher le résumé des informations de Gnome User Share WebDAV              #
 ###############################################################################
 gus() {
-  # Check if the service is running
+  # Vérifier si le service est en cours d'exécution
   STATUS=$(systemctl --user is-active gnome-user-share-webdav.service)
 
-  # Get full status output
+  # Obtenir la sortie complète de l'état
   INFO=$(systemctl --user status gnome-user-share-webdav.service)
 
-  # Extract main PID
+  # Extraire le PID principal
   PID=$(echo "$INFO" | grep -oP 'Main PID: \K[0-9]+')
 
-  # Extract memory usage
+  # Extraire l'utilisation de la mémoire
   MEMORY=$(echo "$INFO" | grep -oP 'Memory:\s+\K.*')
 
-  # Extract Apache listening port (look for "Listen" argument)
+  # Extraire le port d'écoute Apache (rechercher l'argument "Listen")
   PORT=$(echo "$INFO" | grep -oP 'Listen \K[0-9]+' | head -n 1)
 
-  echo "🔍 Gnome User Share WebDAV - Info Summary"
-  echo "-----------------------------------------"
-  echo "✅ Status       : $STATUS"
-  echo "🆔 Main PID     : $PID"
-  echo "📦 Memory Usage : $MEMORY"
-  echo "🌐 Listening on : Port $PORT"
+  echo "🔍 Gnome User Share WebDAV - Résumé des infos"
+  echo "---------------------------------------------"
+  echo "✅ Statut         : $STATUS"
+  echo "🆔 PID principal  : $PID"
+  echo "📦 Utilisation mémoire : $MEMORY"
+  echo "🌐 Écoute sur     : Port $PORT"
 }
 
 ###############################################################################
-# Batch rename the image files in the current directory.                      #
+# Renommer en lot les fichiers image dans le répertoire courant.             #
 ###############################################################################
 renimg() {
   python3 "$HOME/.oh-my-bash/custom/functions/rename_images.py" "$@"
 }
 
+
 ###############################################################################
-# csv_checker function                                                        #
+# Fonction csv_checker                                                        #
 ###############################################################################
 csvc() {
   python3 "$HOME/.oh-my-bash/custom/functions/csv_checker.py" "$@"
 }
-
-
