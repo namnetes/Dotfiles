@@ -157,3 +157,8 @@ source "$OSH"/oh-my-bash.sh
 # Example aliases
 # alias bashconfig="mate ~/.bashrc"
 # alias ohmybash="mate ~/.oh-my-bash"
+
+# Customization sourced from $HOME/oh-my-bash/custom/function/own.functions.sh
+if [ -f "$HOME/.oh-my-bash/custom/functions/own.functions.sh" ]; then
+  source "$HOME/.oh-my-bash/custom/functions/own.functions.sh"
+fi
