@@ -32,10 +32,7 @@ alias mount='mount | column -t'
 alias f='free -t'
 alias h='history | fzf'
 alias j='jobs -l'
-alias fd='fdfind'
-
-## make mount command output pretty and human readable format
-alias mount='mount | column -t'
+alias fdf='fdfind'
 
 ## show open ports
 ## '-t' affiche les connexions TCP
@@ -52,36 +49,36 @@ alias p='ss -tulnp'
 ## -E          : remplace les tabulations par des espaces
 ## -W          : désactive le retour automatique à la ligne (line wrapping)
 ## --tabsize=3 : définit la taille des tabulations à 3 espaces
-alias n='nano -lciEW --tabsize=3'
+alias n='nano -lciEW --tabsize=2'
 
 ## update ubuntu system
-alias u='sudo apt update && sudo apt upgrade && pkill firefox && sudo snap refresh'
+alias u='sudo apt update && sudo apt upgrade && sudo snap refresh'
 
 ## xclip
 alias xclip='xclip -selection clipboard'
 
 ## display fucntion defined in the custom folder of .oh-my-bash
-if [ -f "$HOME//.oh-my-bash/custom/functions/own.functions.sh" ]; then
+if [ -f "$HOME/.oh-my-bash/custom/functions/own.functions.sh" ]; then
   alias func="grep -E '^\s*[a-zA-Z0-9_]+\s*\(\)\s*\{' ~/.oh-my-bash/custom/functions/own.functions.sh | sed s'/{//g'"
 fi
 
-if [ -f "$HOME/Scripts/kvm/vm-clone.sh" ]; then
-  alias vclone='bash $HOME/Scripts/kvm/vm-clone.sh'
+if [ -f "$HOME/alm-tools/kvm/vm-clone.sh" ]; then
+  alias vclone='bash $HOME/alm-tools/kvm/vm-clone.sh'
 fi
 
-if [ -f "$HOME/Scripts/kvm/vm-get-ip.sh" ]; then
-  alias vip='bash $HOME/Scripts/kvm/vm-get-ip.sh'
+if [ -f "$HOME/alm-tools/kvm/vm-get-ip.sh" ]; then
+  alias vip='bash $HOME/alm-tools/kvm/vm-get-ip.sh'
 fi
 
-if [ -f "$HOME/Scripts/kvm/vm-list.sh" ]; then
-  alias vlist='bash $HOME/Scripts/kvm/vm-list.sh'
+if [ -f "$HOME/alm-tools/kvm/vm-list.sh" ]; then
+  alias vlist='bash $HOME/alm-tools/kvm/vm-list.sh'
 fi
 
-if [ -f "$HOME/Scripts/kvm/vm-set-hostname.sh" ]; then
-  alias vhost='bash $HOME/Scripts/kvm/vm-set-hostname.sh'
+if [ -f "$HOME/alm-tools/kvm/vm-set-hostname.sh" ]; then
+  alias vhost='bash $HOME/alm-tools/kvm/vm-set-hostname.sh'
 fi
 
-if [ -f "$HOME/Scripts/kvm/vm-update-sshconfig.sh" ]; then
-  alias vssh='bash $HOME/Scripts/kvm/vm-update-sshconfig.sh'
+if [ -f "$HOME/alm-tools/kvm/vm-update-sshconfig.sh" ]; then
+  alias vssh='bash $HOME/alm-tools/kvm/vm-update-sshconfig.sh'
 fi
 
